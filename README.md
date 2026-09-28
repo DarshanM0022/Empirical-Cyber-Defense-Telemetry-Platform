@@ -8,11 +8,24 @@ An enterprise-grade defensive cybersecurity platform that combines non-destructi
 
 ## Visual Proof of Concept (Live Running Platform)
 
-### Enterprise SOC Command Center (HUD & Telemetry Stream)
-![SOC Command Center Dashboard](docs/assets/screenshots/poc_soc_dashboard_full.png)
+> **Authenticity Note**: All screenshots were captured directly from a live running AegisX instance (`http://127.0.0.1:8000`) evaluating live HTTP probes and streaming SIEM telemetry. **No synthetic mocks or AI image generators were used.**
 
-### Executive Security Audit Report (Verifiable Findings with SHA-256 Digests)
-![Executive Security Audit Report](docs/assets/screenshots/poc_audit_report.png)
+| Enterprise SOC Command Center | Verifiable Findings & SHA-256 Provenance |
+| :---: | :---: |
+| [![SOC Command Center](docs/assets/screenshots/poc_soc_dashboard_full.png)](docs/proof-of-concept.md#1-enterprise-soc-command-center-telemetry-hud--threat-matrix) | [![Findings Evidence](docs/assets/screenshots/poc_findings_evidence.png)](docs/proof-of-concept.md#2-verifiable-empirical-findings--cryptographic-evidence-ledger) |
+| *Real-time Posture Arc Gauge & Threat HUD* | *Every finding backed by raw headers & SHA-256 hash* |
+
+| SIEM Telemetry & Detection Pipeline | Incident Response & Investigation War Room |
+| :---: | :---: |
+| [![SIEM Telemetry Pipeline](docs/assets/screenshots/poc_siem_pipeline.png)](docs/proof-of-concept.md#3-siem-telemetry-stream--real-time-rule-detections) | [![Incident War Room](docs/assets/screenshots/poc_incidents_war_room.png)](docs/proof-of-concept.md#4-incident-response-war-room--investigation-lifecycle) |
+| *ECS-normalized authentication event streams* | *Correlated threats, status tracking & playbooks* |
+
+| Tamper-Evident Cryptographic Audit Ledger | Executive Compliance & Security Report |
+| :---: | :---: |
+| [![Tamper Audit Ledger](docs/assets/screenshots/poc_tamper_audit.png)](docs/proof-of-concept.md#5-cryptographic-tamper-evident-audit-ledger) | [![Audit Report](docs/assets/screenshots/poc_audit_report.png)](docs/proof-of-concept.md#6-executive-security-audit--compliance-report) |
+| *Immutable trail of authorizations, scans & triage* | *Verifiable executive audit report with evidence hashes* |
+
+📖 **For detailed empirical verification steps, attack simulations, and mathematical proof breakdowns, read the full [Proof of Concept Technical Report](docs/proof-of-concept.md).**
 
 ---
 
@@ -106,9 +119,13 @@ python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
 * **OpenAPI / Swagger REST Documentation**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 * **Health Verification**: [http://127.0.0.1:8000/api/v1/health](http://127.0.0.1:8000/api/v1/health)
 
-### 4. Run Automated Proof of Concept Data Generation
+### 4. Run Automated Proof of Concept & Attack Simulations
 ```powershell
+# Ingest baseline empirical scan & authentication logs
 python scripts/populate_poc_data.py
+
+# Ingest advanced credential spray, incident lifecycle, & cryptographic SHA-256 verification
+python scripts/run_advanced_poc.py
 ```
 
 ### 5. Run Automated Test Suite

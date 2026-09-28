@@ -16,6 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
     initFastActions();
     loadAllData();
 
+    // Check URL hash for direct tab linking (e.g. #findings, #siem)
+    const initialHash = window.location.hash.replace("#", "");
+    if (initialHash && ["overview", "assets", "findings", "siem", "incidents", "audit"].includes(initialHash)) {
+        switchTab(initialHash);
+    }
+
     // Auto-refresh posture every 12 seconds
     setInterval(loadPostureOverview, 12000);
 });
