@@ -143,7 +143,9 @@ docker-compose up --build
 
 ---
 
-## In-Depth Documentation
+## In-Depth Documentation & Learning Guides
+* 📄 **[Download Beginner's Guide (PDF)](AegisX_Beginners_Guide_Empirical_Cyber_Defense.pdf)** — *A comprehensive guide written for beginners and non-experts to easily understand and explain this project.*
+* 🌐 **[Beginner's Guide (HTML Interactive View)](docs/AegisX_Beginners_Guide.html)**
 * 📖 [Proof of Concept (POC) Technical Walkthrough](docs/proof-of-concept.md)
 * 🏗️ [System Architecture Specification](docs/architecture.md)
 * 🔬 [Safe Scanner Methodology (OWASP WSTG Aligned)](docs/scanner-methodology.md)
