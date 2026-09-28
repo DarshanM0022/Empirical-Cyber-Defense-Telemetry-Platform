@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  aegisx-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegisx-core
+    ports:
+      - "8000:8000"
+    environment:
+      - AEGISX_ENV=production
+      - AEGISX_DATABASE_URL=sqlite:///./data/aegisx.db
+      - AEGISX_SECRET_KEY=aegisx-secure-token-enterprise-production
+      - AEGISX_DEFAULT_ORGANIZATION=SecurityOperations
+    volumes:
+      - aegisx-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  aegisx-data:

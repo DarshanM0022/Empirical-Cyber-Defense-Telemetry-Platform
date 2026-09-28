@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AegisX — Defensive Cybersecurity Platform</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-shield">🛡️</div>
+                <div class="brand-text">
+                    <h1>AegisX</h1>
+                    <span class="version-tag">v0.1.0 Empirical Core</span>
+                </div>
+            </div>
+            
+            <nav class="nav-links">
+                <button class="nav-item active" data-tab="overview">
+                    <span class="icon">📊</span> Security Posture
+                </button>
+                <button class="nav-item" data-tab="assets">
+                    <span class="icon">🌐</span> Assets & Authorization
+                </button>
+                <button class="nav-item" data-tab="findings">
+                    <span class="icon">🔍</span> Findings & Evidence
+                </button>
+                <button class="nav-item" data-tab="siem">
+                    <span class="icon">📡</span> SIEM & Telemetry
+                </button>
+                <button class="nav-item" data-tab="incidents">
+                    <span class="icon">🚨</span> Incidents
+                </button>
+                <button class="nav-item" data-tab="audit">
+                    <span class="icon">📜</span> Audit Log
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="policy-note">
+                    <strong>Rule #1</strong>: No invented events. All findings backed by raw evidence.
+                </div>
+                <a href="/docs" target="_blank" class="api-docs-link">📖 Interactive API Docs</a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Bar -->
+            <header class="topbar">
+                <div class="posture-summary-banner">
+                    <div class="posture-chip">
+                        <span class="label">OVERALL RISK</span>
+                        <span class="value" id="top-risk-level">CALCULATING...</span>
+                    </div>
+                    <div class="posture-chip">
+                        <span class="label">POSTURE SCORE</span>
+                        <span class="value score-num" id="top-risk-score">--</span><span class="max-score">/100</span>
+                    </div>
+                    <div class="posture-chip">
+                        <span class="label">CRITICAL FINDINGS</span>
+                        <span class="value text-danger" id="top-critical-findings">0</span>
+                    </div>
+                    <div class="posture-chip">
+                        <span class="label">ACTIVE INCIDENTS</span>
+                        <span class="value text-warning" id="top-active-incidents">0</span>
+                    </div>
+                    <div class="posture-chip">
+                        <span class="label">HIGH RISK ASSETS</span>
+                        <span class="value text-orange" id="top-high-risk-assets">0</span>
+                    </div>
+                    <div class="posture-chip">
+                        <span class="label">SUSPICIOUS EVENTS</span>
+                        <span class="value text-purple" id="top-suspicious-events">0</span>
+                    </div>
+                </div>
+                <div class="system-status">
+                    <span class="status-indicator live"></span> Live Defensive Engine
+                </div>
+            </header>
+
+            <!-- TAB 1: OVERVIEW -->
+            <section id="tab-overview" class="tab-pane active">
+                <div class="section-header">
+                    <h2>Empirical Security Posture</h2>
+                    <p>Transparent defense metrics calculated exclusively from verified telemetry and network observations.</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card card-hero">
+                        <h3>Risk Formula & Attribution Breakdown</h3>
+                        <p class="card-desc">Every point added or subtracted is traceable to an auditable observation.</p>
+                        <div id="overview-risk-reasons" class="risk-breakdown-list">
+                            <div class="empty-state">Register an authorized asset and run a scan to generate risk factors.</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Real Attack & Telemetry Counters</h3>
+                        <p class="card-desc">Computed directly from raw ingested authentication logs.</p>
+                        <div class="stat-rows" id="overview-telemetry-counters">
+                            <div class="stat-row">
+                                <span>Authentication Attempts</span>
+                                <strong id="stat-auth-attempts">0</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Failed Authentication</span>
+                                <strong id="stat-failed-auth" class="text-danger">0</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>New Device Events</span>
+                                <strong id="stat-new-device">0</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Suspicious Authentication Detections</span>
+                                <strong id="stat-suspicious-auth" class="text-warning">0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: ASSETS & AUTHORIZATION -->
+            <section id="tab-assets" class="tab-pane">
+                <div class="section-header flex-between">
+                    <div>
+                        <h2>Asset Inventory & Authorization Barrier</h2>
+                        <p>Scanning is strictly prohibited without verified, unexpired explicit authorization.</p>
+                    </div>
+                    <button class="btn btn-primary" id="btn-open-asset-modal">+ Register New Asset</button>
+                </div>
+
+                <div class="card table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Asset Name</th>
+                                <th>Type & Target</th>
+                                <th>Environment</th>
+                                <th>Criticality</th>
+                                <th>Authorization Status</th>
+                                <th>Risk Score</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assets-table-body">
+                            <tr><td colspan="7" class="text-center">Loading assets...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 3: FINDINGS & EVIDENCE -->
+            <section id="tab-findings" class="tab-pane">
+                <div class="section-header">
+                    <h2>Empirical Findings & Evidence Archive</h2>
+                    <p>No fabricated vulnerabilities. Every finding preserves raw response headers and cryptographic hashes.</p>
+                </div>
+
+                <div class="card table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Severity</th>
+                                <th>Finding Title</th>
+                                <th>Category</th>
+                                <th>Confidence</th>
+                                <th>Evidence Hash</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="findings-table-body">
+                            <tr><td colspan="6" class="text-center">No findings recorded yet. Run a safe scan on an authorized asset.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 4: SIEM & TELEMETRY -->
+            <section id="tab-siem" class="tab-pane">
+                <div class="section-header flex-between">
+                    <div>
+                        <h2>SIEM Telemetry & Detection Pipeline</h2>
+                        <p>Stream real identity, endpoint, and server logs. Deterministic rules trigger verifiable detections.</p>
+                    </div>
+                    <button class="btn btn-secondary" id="btn-open-event-modal">+ Ingest Security Event</button>
+                </div>
+
+                <div class="siem-grid">
+                    <div class="card table-card">
+                        <h3>Telemetry Event Stream</h3>
+                        <table class="data-table compact">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Source</th>
+                                    <th>Event / Action</th>
+                                    <th>Actor</th>
+                                    <th>Result</th>
+                                    <th>Source IP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="events-table-body">
+                                <tr><td colspan="6" class="text-center">No telemetry events ingested.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card table-card">
+                        <h3>Triggered Detections</h3>
+                        <table class="data-table compact">
+                            <thead>
+                                <tr>
+                                    <th>Severity</th>
+                                    <th>Rule Name</th>
+                                    <th>Description</th>
+                                    <th>Events</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detections-table-body">
+                                <tr><td colspan="4" class="text-center">No detections triggered.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: INCIDENTS -->
+            <section id="tab-incidents" class="tab-pane">
+                <div class="section-header">
+                    <h2>Correlated Security Incidents</h2>
+                    <p>Correlates empirical findings with live telemetry detections into unified incident investigations.</p>
+                </div>
+
+                <div class="card table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Severity</th>
+                                <th>Incident Title</th>
+                                <th>Status</th>
+                                <th>First Observed</th>
+                                <th>Related Finding</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="incidents-table-body">
+                            <tr><td colspan="6" class="text-center">No open incidents.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 6: AUDIT LOG -->
+            <section id="tab-audit" class="tab-pane">
+                <div class="section-header">
+                    <h2>Cryptographic & Operational Audit Trail</h2>
+                    <p>Tamper-evident record of all scans, authorizations, user actions, and detections.</p>
+                </div>
+
+                <div class="card table-card">
+                    <table class="data-table compact">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Actor</th>
+                                <th>Action</th>
+                                <th>Resource Type</th>
+                                <th>Resource ID</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="audit-table-body">
+                            <tr><td colspan="6" class="text-center">Loading audit records...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL: REGISTER ASSET -->
+    <div id="modal-asset" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Register Asset for Assessment</h3>
+                <button class="btn-close" onclick="closeModal('modal-asset')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-create-asset">
+                    <div class="form-group">
+                        <label>Asset Name</label>
+                        <input type="text" id="asset-name" required placeholder="e.g. Production Web Portal">
+                    </div>
+                    <div class="form-group">
+                        <label>Asset Type</label>
+                        <select id="asset-type">
+                            <option value="website">Website / Domain</option>
+                            <option value="api_endpoint">API Endpoint</option>
+                            <option value="server">Linux / Windows Server</option>
+                            <option value="cloud_vm">Cloud VM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Target Hostname, URL or IP</label>
+                        <input type="text" id="asset-target" required placeholder="e.g. example.com or 127.0.0.1:8080">
+                        <small>Must be infrastructure you control or have explicit authorization to test.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Environment</label>
+                        <select id="asset-env">
+                            <option value="production">Production</option>
+                            <option value="staging">Staging</option>
+                            <option value="development">Development</option>
+                            <option value="testing">Testing</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Criticality</label>
+                        <select id="asset-criticality">
+                            <option value="critical">Critical</option>
+                            <option value="high">High</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">Register Asset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: AUTHORIZE ASSET -->
+    <div id="modal-authorize" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Explicit Asset Authorization Gate</h3>
+                <button class="btn-close" onclick="closeModal('modal-authorize')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    ⚠️ <strong>Hard Requirement</strong>: AegisX strictly refuses to execute scans against unauthorized targets. Record explicit permission below.
+                </div>
+                <form id="form-authorize-asset">
+                    <input type="hidden" id="auth-asset-id">
+                    <div class="form-group">
+                        <label>Authorized Scope</label>
+                        <input type="text" id="auth-scope" required placeholder="e.g. https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Authorized By (Security Officer / Owner)</label>
+                        <input type="text" id="auth-by" required placeholder="e.g. secops-admin@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Authorization Method</label>
+                        <select id="auth-method">
+                            <option value="admin_verified">Admin Verified (Direct Authorization)</option>
+                            <option value="signed_contract">Written Authorization Contract</option>
+                            <option value="dns_txt">DNS TXT Record Verification</option>
+                            <option value="http_token">HTTP Well-Known Token</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Expiration (Days)</label>
+                        <input type="number" id="auth-days" value="90" min="1" max="365">
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">Grant Authorization</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: EVIDENCE INSPECTOR -->
+    <div id="modal-evidence" class="modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-header">
+                <h3>Verifiable Evidence Inspector</h3>
+                <button class="btn-close" onclick="closeModal('modal-evidence')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="evidence-container">
+                    <div class="evidence-meta">
+                        <div><strong>Finding:</strong> <span id="ev-title">--</span></div>
+                        <div><strong>Category:</strong> <span id="ev-category">--</span></div>
+                        <div><strong>Severity:</strong> <span id="ev-severity" class="badge">--</span></div>
+                        <div><strong>Observed At:</strong> <span id="ev-timestamp">--</span></div>
+                        <div><strong>Evidence SHA-256:</strong> <code id="ev-sha">--</code></div>
+                    </div>
+
+                    <h4>Request Details</h4>
+                    <pre><code id="ev-request">--</code></pre>
+
+                    <h4>Raw Response Headers (Observed Empirical State)</h4>
+                    <pre><code id="ev-headers">--</code></pre>
+
+                    <h4>Remediation Recommendation</h4>
+                    <div id="ev-recommendation" class="recommendation-box">--</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: INGEST SIEM EVENT -->
+    <div id="modal-event" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Ingest SIEM Security Telemetry</h3>
+                <button class="btn-close" onclick="closeModal('modal-event')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="form-ingest-event">
+                    <div class="form-group">
+                        <label>Telemetry Source</label>
+                        <select id="event-source">
+                            <option value="identity-provider">Identity Provider (IdP / Okta / Azure AD)</option>
+                            <option value="web-server">Web Server (Nginx / Apache)</option>
+                            <option value="endpoint-agent">AegisX Endpoint Agent</option>
+                            <option value="firewall">Network Firewall / WAF</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Actor Identity (Username / ID)</label>
+                        <input type="text" id="event-actor" required placeholder="e.g. user_921 or admin@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Action & Result</label>
+                        <div class="flex-row">
+                            <input type="text" id="event-action" value="login" required placeholder="action">
+                            <select id="event-result">
+                                <option value="failure">Failure</option>
+                                <option value="success">Success</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Source IP Address</label>
+                        <input type="text" id="event-ip" placeholder="e.g. 198.51.100.42">
+                    </div>
+                    <div class="form-group">
+                        <label>Device ID</label>
+                        <input type="text" id="event-device" placeholder="e.g. dev_macbook_01">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="event-new-device"> New / Unrecognized Device
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Target Asset (Optional)</label>
+                        <select id="event-asset-select">
+                            <option value="">(None)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">Ingest Real Event</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
